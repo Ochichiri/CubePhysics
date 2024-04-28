@@ -108,12 +108,16 @@ public class Cube : MonoBehaviour
 
     private void ExplodeCurrentCubes(List<Rigidbody> cubes)
     {
-        float _explosionForce = 500f;
-        float _explosionRadius = 20f;
+        float scaleRatio = (1 / transform.localScale.x);
+
+        float _explosionForce = 500f * scaleRatio;
+        float _explosionRadius = 20f * scaleRatio;
 
         foreach (Rigidbody explodableObject in cubes)
         {
-            explodableObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            float differenceRatio = ((transform.position - explodableObject.position).magnitude) / _explosionRadius;
+
+            explodableObject.AddExplosionForce(_explosionForce * differenceRatio, transform.position, _explosionRadius);
         }
     }
 
